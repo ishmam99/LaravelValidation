@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Session;
+//use App\Rules\Alpha_Space;
 use App\People;
-Validator::extend('alpha_spaces', function($attribute, $value)
-    {
-        return preg_match('/^[\pL\s]+$/u', $value);
-    });
+// Validator::extend('alpha_spaces', function($attribute, $value)
+//     {
+//         return preg_match('/^[\pL\s]+$/u', $value);
+//     });
 
 class UserController extends Controller
 {
@@ -34,7 +35,7 @@ class UserController extends Controller
 
                     $validateData=$req->validate([
                         'email' => ['required', 'string', 'email'],
-                        'password' =>[ 'required','min:8','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+                        'password' =>[ 'required','min:8','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/'],
                         
                     ]); 
 
@@ -59,24 +60,26 @@ class UserController extends Controller
         $password =$req->password;
         $salary=$req->salary;
         $birth_date=$req->birth_date;
+
+
+       
+        $validateData=$req->validate([
+
+            'name' => ['required','alpha_spaces'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:people'],
+            'password' =>[ 'required','min:8','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/','confirmed'],
+            //'confirm_password' => ['required','same:password'],
+            'salary'=>['required','numeric'],
+            'birth_date'=>['required','date']
+
+        ]); 
+
         $obj =new People();
         $obj->birth_date=$birth_date;
         $obj->name=$name;
         $obj->password=md5($password);
         $obj->salary=$salary;
         $obj->email=$email;
-
-       
-        $validateData=$req->validate([
-
-            'name' => ['required','alpha_spaces', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:people'],
-            'password' =>[ 'required','min:8','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
-            'confirm_password' => ['required','same:password'],
-            'salary'=>['required','numeric'],
-            'birth_date'=>['required','date']
-
-        ]); 
         if($obj->save()){
             return redirect()->to('dashboard');
         }

@@ -40,9 +40,9 @@
             </div>
 
             <div class="formgroup" id="message-form">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password">
-                <span style="color:red">{{$errors->first('confirm_password')}}</span>
+                <label for="password_confirmation">Confirm Password</label>
+                <input type="password" id="password_confirmation" name="password_confirmation">
+                <span style="color:red">{{$errors->first('password_confirmation')}}</span>
             </div>
 
             <div class="formgroup" id="message-form">
