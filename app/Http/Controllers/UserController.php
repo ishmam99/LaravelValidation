@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Session;
 //use App\Rules\Alpha_Space;
 use App\People;
+use PDF;
+use App\Exports\PeopleExport;
+
+use App\UserImage;
+use Maatwebsite\Excel\Facades\Excel;
 // Validator::extend('alpha_spaces', function($attribute, $value)
 //     {
 //         return preg_match('/^[\pL\s]+$/u', $value);
@@ -85,7 +90,61 @@ class UserController extends Controller
         }
     }
     public function dashboard(){
-        return view('dashboard');
+        $images=UserImage::all();
+        
+
+        return view('dashboard',compact('images'));
         
     }
+    public function all(){
+        $peoples=People::all();
+        return view('users',['peoples'=>$peoples]);
+    }
+
+    public function delete($id)
+    {
+        $people = People::find($id);
+        $people->delete();
+
+        return redirect('/users')->with('delete', 'User deleted!');
+    }
+
+    public function update(Request $req ,$id){
+        $name=$req->name;
+        $email=$req->email;
+       
+        $salary=$req->salary;
+        $birth_date=$req->birth_date;
+
+
+       
+        $validateData=$req->validate([
+
+            'name' => ['required','alpha_spaces'],
+            'email' => 'required|email|unique:people,email,'. $id ,
+            
+            'salary'=>['required','numeric'],
+            'birth_date'=>['required','date']
+
+        ]); 
+
+        
+
+        $update = \DB::table('people') ->where('id', $req['id']) ->limit(1) ->update( [ 'name' => $req['name'], 'email' => $req['email'], 'salary' => $req['salary'],'birth_date' => $req['birth_date'] ]);
+
+        return redirect('/users')->with('success', 'User Updated!');
+    }
+    public function profile(){
+        return view('profile');
+    }
+    public function export() 
+    {
+            return Excel::download(new PeopleExport, 'people.xlsx');
+    }
+    public function downloadPDF($id) {
+        $show = People::find($id);
+        $pdf = PDF::loadView('pdf', compact('show'));
+        
+        return $pdf->download('people.pdf');
+   }
 }

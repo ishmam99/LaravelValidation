@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="container">
         <div class="d-flex justify-content-end"> <a href="{{URL::to('logout')}}"><button class="btn btn-danger" >Logout</button></a></div>
     
 
@@ -18,12 +19,33 @@
 
 <div id="form">
 
-    <div class="fish" id="fish"></div>
-    <div class="fish" id="fish2"></div>
+   
    
     <div class="d-flex justify-content-center">
+        <div>
+            <h2>Upload Image</h2>
+            <div>
+                @if(Session::has('msg'))
+            <span style="color:green">{{Session::get('msg')}}</span>
+            @endif
+            </div>
+        <form method="POST" action="{{URL::to('upload')}}" enctype="multipart/form-data">
+            {{csrf_field()}}
+                <input type="file" multiple required name="user_image[]">
+                <input type="submit" name="submit"  value="Upload" style="background-color:darkcyan">
+            </form>
+        </div>
+        
     </div>
-    
+    <div class="row">
+            @foreach ($images as $image)
+            <div class="col-4 pb-4">
+        <img src="{{asset('uploads/original/'.$image->imagename)}}" class="w-100" >
+    </div>
+            @endforeach
+        </div>
+        
+</div>
 </div>
 
 

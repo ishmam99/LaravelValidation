@@ -21,4 +21,11 @@ Route::group(['middleware'=>'checkloggedin'],function(){
    
     Route::get('dashboard','UserController@dashboard');
     Route::get('logout','UserController@logout');
+    Route::get('users','UserController@all');
+    Route::get('delete/{id}','UserController@delete');
+    Route::post('update/{id}','UserController@update');
+    Route::post('upload','MediaController@upload');
+    Route::get('export','UserController@export');
+    Route::get('/downloadPDF/{id}','UserController@downloadPDF');
+
 });
