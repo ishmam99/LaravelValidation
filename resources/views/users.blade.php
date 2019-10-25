@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>Users</title>
 </head>
 <body>
     <div class="container">
+      
         <div class="col-sm-12">
 
                 @if(session()->get('success'))
@@ -42,7 +47,7 @@
             <td>{{$p->email}}</td>
             <td>{{$p->salary}}</td>
             <td>{{$p->birth_date}}</td>
-            <td data-toggle="modal" data-target="# edit{{ $p->id }} "><button class="btn btn-primary">edit</button>   </td>
+            <td data-toggle="modal" data-target="# edit{{ $p->id }} "><button class="btn btn-primary">edit</button></td>
             
                 <div class="modal fade" id=" edit{{ $p->id }} " tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                 aria-hidden="true">
@@ -82,6 +87,13 @@
                                     <input type="date" value="{{$p->birth_date}}" id="birth_date" name="birth_date">
                                     <span style="color:red">{{$errors->first('birth_date')}}</span>
                                 </div>
+                                
+                                <div class="formgroup" id="message-form">
+                                  <label for="Profession">Profession</label>
+                                  <input type="date" value="{{$p->birth_date}}" id="Profession" name="birth_date">
+                                  <span style="color:red">{{$errors->first('Profession')}}</span>
+                              </div>
+                  
                     
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
@@ -98,36 +110,38 @@
               
             
           
-            <td data-toggle="modal" data-target="# {{ $p->id }} ">
-                <button type="button" class="btn btn-danger" >
-                 Delete
-                </button> 
-     <!-- Modal --> 
-     <div class="modal fade" id=" {{ $p->id }} " role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            This Will Delete <strong> {{ $p->name }} </strong> From The List!  
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            
-            <a class="btn btn-primary" href="delete/{{ $p->id }}">Delete</a>
+              <td >
+               
+
+                  <button type="button" data-toggle="modal" data-target="#{{$p->id}}" class="btn btn-danger" >
+                   Delete
+                  </button> 
+               
+       <!-- Modal --> 
+       <div class="modal fade" id="{{$p->id}}" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This Will Delete <strong> {{ $p->name }} </strong> From The List!  
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               
-       
+              <a class="btn btn-primary" href="delete/{{ $p->id }}">Delete</a>
+                
+         
+            </div>
           </div>
         </div>
-      </div>
-    </div> 
-  
-    
-          </td>
+      </div> 
+    </td>
+        
           <td><a href="{{URL::to('export')}}"><button class="btn btn-info">Export</button></a></td>
           <td><a href="{{action('UserController@downloadPDF', $p->id)}}">PDF</a></td>
             </tr>
@@ -148,19 +162,15 @@
 </div>
 
 
-
-   
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --}}
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
  crossorigin="anonymous"></script>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-</script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-</script> 
+ 
 <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script>$(document).ready( function () {
   $('#p-table tfoot th').each( function () {

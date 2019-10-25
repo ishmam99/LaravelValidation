@@ -13,6 +13,9 @@
 
 Route::get('/', function () {
     return view('welcome');});
+    
+Route::get('/pdf-check', function () {
+    return view('pdf');});
 Route::get('/login','UserController@login');
 Route::post('loginstore','UserController@loginstore');
 Route::get('/signup','UserController@signup');
@@ -27,5 +30,10 @@ Route::group(['middleware'=>'checkloggedin'],function(){
     Route::post('upload','MediaController@upload');
     Route::get('export','UserController@export');
     Route::get('/downloadPDF/{id}','UserController@downloadPDF');
+    Route::get('/download/{id}','MediaController@download');
+    Route::get('/customer','MediaController@customer');
+    Route::post('import','MediaController@import');
+    Route::get('/pdf','MediaController@pdf');
+    Route::post('create','MediaController@create');
 
 });
